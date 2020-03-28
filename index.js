@@ -263,3 +263,247 @@ console.log(rest);
 
 // console.log(obj)
 
+
+const arr = [1,2,3,4,5,6];
+
+const arr1 = [...arr];
+
+console.log(arr1);
+
+// add
+const arr2 = [...arr.slice(0, 3), 8, ...arr.slice(3)];
+
+console.log(arr2);
+
+
+// update
+const arr3 = [...arr.slice(0, 3), 8, ...arr.slice(4)];
+
+console.log(arr3)
+
+
+// remove
+const arr4 = [...arr.slice(0, 3), ...arr.slice(4)];
+
+console.log(arr4);
+
+const [...rest] = arr;
+
+console.log(rest)
+
+
+const users = [
+  {
+      name: 'yagnesh',
+      gender: 'male',
+      age: 30
+  },
+  {
+      name: 'rohit',
+      gender: 'male',
+      age: 28
+  },
+  {
+      name: 'virat',
+      gender: 'male',
+      age: 25
+  },
+  {
+      name: 'deepika',
+      gender: 'female',
+      age: 32
+  },
+  {
+      name: 'radhika',
+      gender: 'female',
+      age: 26
+  }
+];
+
+
+const user = {
+  name: 'priyanka',
+  gender: 'female',
+  age: 35
+}
+
+const updatedUsers = [user, ...users];
+
+// console.log(updatedUsers);
+
+
+// console.log(1 == '1')
+
+const index = users.findIndex(user => user.name === 'virat');
+
+const updatedUsers1 = [...users.slice(0, index), {...users[index], age: 27 }, ...users.slice(index + 1) ];
+
+// console.log(updatedUsers1);
+// this we can use to remove data from first or max third position
+const [,...rest] = users;
+
+const i = users.findIndex(x => x.name === 'deepika');
+
+console.log(i)
+
+const newUsers = [...users.slice(0, i), ...users.slice(i + 1)];
+
+const newUsers1 = users.filter(x => x.name !== 'deepika');
+
+
+console.log(newUsers1);
+
+// console.log(rest)
+
+
+var arr = [...Array(100000000).keys()];
+
+console.time("for loop");
+
+var newArr = [];
+for (let index = 0; index < arr.length; index++) {
+  var element = arr[index];
+  newArr.push(element);
+}
+
+console.timeEnd("for loop");
+
+console.time("foreach loop");
+
+var newArr1 = [];
+arr.forEach(element => {
+  newArr1.push(element);
+});
+
+console.timeEnd("foreach loop");
+
+   
+const c = a || b;
+const d = a && b;
+
+
+console.log(c)
+console.log(d)
+
+
+const arr = [1,2,3,4,5, 6];
+
+
+// let sum = 0;
+
+// for (let index = 0; index < arr.length; index++) {
+//     const element = arr[index];
+//     sum += element;
+// }
+
+// console.log(sum);
+
+const sum = arr.reduce((p, c) => p + c, 0);
+
+console.log(sum);
+
+
+const users = [
+  {
+      name: 'yagnesh',
+      gender: 'male',
+      age: 30
+  },
+  {
+      name: 'rohit',
+      gender: 'male',
+      age: 28
+  },
+  {
+      name: 'virat',
+      gender: 'male',
+      age: 25
+  },
+  {
+      name: 'deepika',
+      gender: 'female',
+      age: 32
+  },
+  {
+      name: 'radhika',
+      gender: 'female',
+      age: 26
+  }
+];
+
+
+//   {
+//       male: [],
+//       female: []
+//   }
+
+// {
+//     00-09: [],
+//     20-29: [],
+//     90-99: []
+//     120-129: []
+// }
+
+
+const groupBy = users.reduce((p, c) => {
+  (p[c.gender] = p[c.gender] || []).push(c);
+  return p; 
+}, {});
+
+console.log(groupBy)
+
+//   const newData = users.reduce((p, c) => {
+//       let newData = c;
+//       if(c.name === 'virat') {
+//           newData = {...c, age: 27}
+//       }
+//       return [...p, newData];
+//   }, []);
+
+console.log(newData);
+
+
+
+
+class Animal {
+  constructor(type = 'animal') {
+      this.type = type;
+  }
+
+  set type(val) {
+      this._type = val.toUpperCase();
+  }
+
+  get type() {
+      return this._type
+  }
+
+  sound() {
+      return 'Animal Sound';
+  }
+};
+
+class Cat extends Animal {
+  constructor(type = 'cat') {
+      super(type)
+  }
+
+  sound() {
+      const soundType = super.sound();
+      return `${soundType} is meoww...`
+  }
+}
+
+
+const a = new Animal('dog');
+
+console.log(a.type)
+console.log(a.sound())
+
+const c = new Cat();
+console.log(c.type)
+console.log(c.sound())
+
+
+
+
