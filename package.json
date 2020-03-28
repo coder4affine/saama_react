@@ -1,0 +1,35 @@
+{
+  "name": "saama_react",
+  "version": "0.0.1",
+  "description": "training application",
+  "main": "index.js",
+  "repository": "https://github.com/coder4affine/saama_react.git",
+  "author": "Yagnesh Modh <yagnesh.ash.modh@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "webpack",
+    "eslint": "eslint --debug src/",
+    "eslint:fix": "eslint --debug src/ --fix"
+  },
+  "dependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
+    "babel-loader": "^8.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "^2.5.1",
+    "prettier": "2.0.2",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  }
+}
