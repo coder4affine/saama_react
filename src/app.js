@@ -45,6 +45,7 @@ App.propTypes = {
 
 App.defaultProps = {
   title: 'Hello Word',
+  caption: 'How are you?',
 };
 
 export default App;
