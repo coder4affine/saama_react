@@ -3,8 +3,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const c = 'new vale';
-
 class App extends React.Component {
   state = {
     text: '',
@@ -19,7 +17,6 @@ class App extends React.Component {
   render() {
     console.log('render');
     const { title, caption } = this.props;
-    const { text } = this.state;
     return (
       <>
         <h1>{title}</h1>
