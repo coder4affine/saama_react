@@ -1,4 +1,5 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -15,5 +16,15 @@ module.exports = {
         use: 'babel-loader',
       },
     ],
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      template: './public/index.html',
+    }),
+  ],
+  devServer: {
+    contentBase: path.join(__dirname, 'output'),
+    port: 8080,
   },
 };
