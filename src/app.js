@@ -3,6 +3,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+const c = 'new vale';
+
 class App extends React.Component {
   state = {
     text: '',
