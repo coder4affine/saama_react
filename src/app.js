@@ -17,6 +17,7 @@ class App extends React.Component {
   render() {
     console.log('render');
     const { title, caption } = this.props;
+    const { text } = this.state;
     return (
       <>
         <h1>{title}</h1>
@@ -44,7 +45,6 @@ App.propTypes = {
 
 App.defaultProps = {
   title: 'Hello Word',
-  caption: 'How are you?',
 };
 
 export default App;
