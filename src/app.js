@@ -10,7 +10,6 @@ class App extends React.Component {
 
   buttonClick = () => {
     const { text } = this.state;
-
     alert(text);
   };
 
