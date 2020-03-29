@@ -17,7 +17,7 @@ class App extends React.Component {
   render() {
     console.log('render');
     const { title, caption } = this.props;
-    const { text } = this.state;
+    // const { text } = this.state;
     return (
       <>
         <h1>{title}</h1>
