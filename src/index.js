@@ -1,8 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './app';
+import { registerObserver } from 'react-perf-devtool';
+// import App from './app';
+import Todos from './Todos';
+import './main.css';
 
-ReactDOM.render(
-  <App title="Title From App" caption="Caption from App" />,
-  document.getElementById('root'),
-);
+const options = {
+  shouldLog: true,
+  port: 8080,
+};
+
+function callback() {}
+
+registerObserver(options, callback);
+
+ReactDOM.render(<Todos />, document.getElementById('root'));
