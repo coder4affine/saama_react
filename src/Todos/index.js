@@ -1,13 +1,23 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
+import TodoForm from './todoForm';
+import TodoList from './todoList';
+import TodoActions from './todoActions';
 // import PropTypes from 'prop-types';
 import styles from './styles';
+import { statusText } from '../constants';
+// import User from './user';
 
-class index extends Component {
+class index extends PureComponent {
   state = {
     todoList: [],
+    status: statusText[0],
+    // user: {
+    //   name: 'yagnesh',
+    // },
   };
 
-  submit = () => {
+  submit = (e) => {
+    e.preventDefault();
     const { value } = this.todoText;
     if (value) {
       const { todoList } = this.state;
@@ -50,76 +60,49 @@ class index extends Component {
     });
   };
 
+  changeStatus = (status) => {
+    this.setState({ status });
+  };
+
   render() {
-    const { todoList } = this.state;
+    console.log('render index');
+    const { todoList, status } = this.state;
     return (
       <div
         style={{
           ...styles.row,
           ...styles.hCenter,
-          flex: 1,
+          ...styles.flex,
         }}
       >
+        {/* <h1>{user.name}</h1> */}
         <h3>To-Do App</h3>
-        <div>
-          <input
-            type="text"
-            ref={(ref) => {
-              this.todoText = ref;
-            }}
-          />
-          <button type="button" onClick={this.submit}>
-            Add Todo
-          </button>
-        </div>
-        <div
-          style={{
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            flex: 1,
+        {/* <User user={user} />
+
+        <button
+          type="button"
+          onClick={() => {
+            this.setState({
+              user: { ...user, name: 'rohit' },
+            });
           }}
         >
-          <div style={{ flex: 1 }}>
-            {todoList.map((todo) => (
-              <div
-                key={todo.id}
-                style={{
-                  margin: 10,
-                  display: 'flex',
-                }}
-              >
-                <input
-                  type="checkbox"
-                  checked={todo.isDone}
-                  onChange={() => this.completeTodo(todo)}
-                />
-                <span
-                  style={{
-                    flex: 1,
-                    textDecoration: todo.isDone ? 'line-through' : 'none',
-                  }}
-                >
-                  {todo.text}
-                </span>
-                <button type="button" onClick={() => this.deleteTodo(todo.id)}>
-                  Delete
-                </button>
-              </div>
-            ))}
-          </div>
-          <div style={{ display: 'flex' }}>
-            <button style={{ flex: 1 }} type="button">
-              All
-            </button>
-            <button style={{ flex: 1 }} type="button">
-              Pending
-            </button>
-            <button style={{ flex: 1 }} type="button">
-              Completed
-            </button>
-          </div>
+          Change name
+        </button> */}
+        <TodoForm
+          submit={this.submit}
+          inputRef={(ref) => {
+            this.todoText = ref;
+          }}
+        />
+        <div style={styles.innerContainer}>
+          <TodoList
+            todoList={todoList}
+            status={status}
+            completeTodo={this.completeTodo}
+            deleteTodo={this.deleteTodo}
+          />
+          <TodoActions changeStatus={this.changeStatus} />
         </div>
       </div>
     );
