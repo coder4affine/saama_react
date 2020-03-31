@@ -46,7 +46,7 @@ const TodoList = ({ todoList, status, completeTodo, deleteTodo }) => {
 TodoList.propTypes = {
   todoList: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
       text: PropTypes.string.isRequired,
       isDone: PropTypes.bool.isRequired,
     }),
