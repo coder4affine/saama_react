@@ -11,7 +11,8 @@ const todoForm = ({ submit, inputRef }) => (
 );
 todoForm.propTypes = {
   submit: PropTypes.func.isRequired,
-  inputRef: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  inputRef: PropTypes.object.isRequired,
 };
 
 export default memo(todoForm);

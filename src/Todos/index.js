@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useRef, useEffect, memo } from 'react';
 import TodoForm from './todoForm';
 import TodoList from './todoList';
 import TodoActions from './todoActions';
@@ -11,6 +11,11 @@ import { statusText } from '../constants';
 // -> data manupulate / add logic
 // -> state
 // -> life cycle
+
+// -> if youn want to use following life cycle method use class component
+// -> getSnapshotBeforeUpdate
+// -> componentDidCatch
+// -> getDerivedStateFromError
 
 // performace impacting lcm
 // -> shouldComponentUpdate / PureComponent
@@ -40,122 +45,108 @@ import { statusText } from '../constants';
 // -> componentDidCatch
 // -> getDerivedStateFromError
 
-class index extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      todoList: [],
-      status: statusText[0],
-      loading: false,
-      error: false,
+// hello data
+const Index = () => {
+  const [todoList, setTodoList] = useState([]);
+  const [status, setStatus] = useState(statusText[0]);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  // const [temp, setTemp] = useState(`${data}, Yagnesh`);
+
+  const inputText = useRef(null);
+
+  const apiCall = (url, reqInit = {}) => {
+    setLoading(true);
+    return new Promise((resolve, reject) => {
+      fetch(url, reqInit)
+        .then((res) => res.json())
+        .then((data) => {
+          resolve(data);
+        })
+        .catch((err) => {
+          setError(err);
+          reject(err);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    });
+  };
+
+  const loadData = async () => {
+    const data = await apiCall('http://localhost:3004/todos');
+    setTodoList(data);
+  };
+
+  // componentDidMount
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  // componentDidUpdate
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      console.log('timer');
+    }, 1000);
+
+    console.log('useEffect', loading);
+    return () => {
+      console.log('unmount');
+      clearTimeout(timer);
     };
-    // this.loadData();
-  }
+  }, [loading, error]);
 
-  componentDidMount() {
-    this.loadData();
-  }
+  // componentWillUnmount
 
-  componentDidCatch(error, info) {
-    console.warn(error);
-    console.warn(info);
-  }
-
-  static getDerivedStateFromError(error) {
-    // Update state so the next render will show the fallback UI.
-    return { error: error.message };
-  }
-
-  loadData = async () => {
-    this.setState({ loading: true });
-    try {
-      const res = await fetch('http://localhost:3004/todos');
-      const todoList = await res.json();
-      this.setState({ todoList });
-    } catch (error) {
-      this.setState({ error: error.message });
-    } finally {
-      this.setState({ loading: false });
-    }
+  const addTodo = async (data) => {
+    const newTodo = await apiCall('http://localhost:3004/todos', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        accept: 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    console.warn(newTodo);
+    setTodoList([newTodo, ...todoList]);
   };
 
-  addTodo = async (data) => {
-    console.warn('rdnet add todo');
-    this.setState({ loading: true });
-    try {
-      const res = await fetch('http://localhost:3004/todos', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          accept: 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-      const newTodo = await res.json();
-      const { todoList } = this.state;
-      this.setState({ todoList: [newTodo, ...todoList] }, () => {
-        // console.log(this.todoText);
-      });
-    } catch (error) {
-      this.setState({ error: error.message });
-    } finally {
-      this.setState({ loading: false });
-    }
+  const updateTodo = async (data) => {
+    const updatedTodo = await apiCall(`http://localhost:3004/todos/${data.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        accept: 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    const updatedTodoList = todoList.map((x) => {
+      if (x.id === updatedTodo.id) {
+        return updatedTodo;
+      }
+      return x;
+    });
+    setTodoList(updatedTodoList);
   };
 
-  updateTodo = async (data) => {
-    this.setState({ loading: true });
-    try {
-      const res = await fetch(`http://localhost:3004/todos/${data.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          accept: 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-      const updatedTodo = await res.json();
-      const { todoList } = this.state;
-      const updatedTodoList = todoList.map((x) => {
-        if (x.id === updatedTodo.id) {
-          return updatedTodo;
-        }
-        return x;
-      });
-      this.setState({ todoList: updatedTodoList });
-    } catch (error) {
-      this.setState({ error: error.message });
-    } finally {
-      this.setState({ loading: false });
-    }
+  const deleteTodo = async (id) => {
+    await apiCall(`http://localhost:3004/todos/${id}`, {
+      method: 'DELETE',
+    });
+    setTodoList(todoList.filter((x) => x.id !== id));
   };
 
-  deleteTodo = async (id) => {
-    this.setState({ loading: true });
-    try {
-      await fetch(`http://localhost:3004/todos/${id}`, {
-        method: 'DELETE',
-      });
-      const { todoList } = this.state;
-      this.setState({ todoList: todoList.filter((x) => x.id !== id) });
-    } catch (error) {
-      this.setState({ error: error.message });
-    } finally {
-      this.setState({ loading: false });
-    }
-  };
-
-  submit = async (e) => {
+  const submit = async (e) => {
     e.preventDefault();
-    const { value } = this.todoText;
+    const { value } = inputText.current;
     if (value) {
-      await this.addTodo({ text: value, isDone: false });
-      this.todoText.value = '';
+      await addTodo({ text: value, isDone: false });
+      // this.todoText.value = '';
     }
   };
 
-  completeTodo = (todo) => {
-    this.updateTodo({ ...todo, isDone: !todo.isDone });
+  const completeTodo = (todo) => {
+    updateTodo({ ...todo, isDone: !todo.isDone });
     // [
     //     ...todoList.slice(0, i),
     //     { ...todoList[i], isDone: !todoList[i].isDone },
@@ -163,66 +154,220 @@ class index extends Component {
     //   ]
   };
 
-  // deleteTodo = (id) => {
-  //   this.deleteTodo(id);
-  // };
-
-  changeStatus = (status) => {
-    this.setState({ status });
+  const changeStatus = (data) => {
+    setStatus(data);
   };
 
-  render() {
-    const { todoList, status, error, loading } = this.state;
-    if (error) {
-      return <h2 style={{ color: 'red' }}>{error}</h2>;
-    }
+  if (error) {
+    return <h2 style={{ color: 'red' }}>{error}</h2>;
+  }
 
-    if (loading) {
-      return <h3 style={{ color: 'blue' }}>Loading...</h3>;
-    }
+  if (loading) {
+    return <h3 style={{ color: 'blue' }}>Loading...</h3>;
+  }
 
-    return (
-      <div
-        style={{
-          ...styles.row,
-          ...styles.hCenter,
-          ...styles.flex,
+  return (
+    <div
+      style={{
+        ...styles.row,
+        ...styles.hCenter,
+        ...styles.flex,
+      }}
+    >
+      {/* <h1>{user.name}</h1> */}
+      <h3 id="h3">To-Do App</h3>
+      {/* <User user={user} />
+
+      <button
+        type="button"
+        onClick={() => {
+          this.setState({
+            user: { ...user, name: 'rohit' },
+          });
         }}
       >
-        {/* <h1>{user.name}</h1> */}
-        <h3 id="h3">To-Do App</h3>
-        {/* <User user={user} />
-
-        <button
-          type="button"
-          onClick={() => {
-            this.setState({
-              user: { ...user, name: 'rohit' },
-            });
-          }}
-        >
-          Change name
-        </button> */}
-        <TodoForm
-          submit={this.submit}
-          inputRef={(ref) => {
-            this.todoText = ref;
-          }}
+        Change name
+      </button> */}
+      <TodoForm submit={submit} inputRef={inputText} />
+      <div style={styles.innerContainer}>
+        <TodoList
+          todoList={todoList}
+          status={status}
+          completeTodo={completeTodo}
+          deleteTodo={deleteTodo}
         />
-        <div style={styles.innerContainer}>
-          <TodoList
-            todoList={todoList}
-            status={status}
-            completeTodo={this.completeTodo}
-            deleteTodo={this.deleteTodo}
-          />
-          <TodoActions changeStatus={this.changeStatus} />
-        </div>
+        <TodoActions changeStatus={changeStatus} />
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
-index.propTypes = {};
+export default memo(Index);
 
-export default index;
+// class index extends Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       todoList: [],
+//       status: statusText[0],
+//       loading: false,
+//       error: false,
+//     };
+//     // this.loadData();
+//   }
+
+//   componentDidMount() {
+//     this.loadData();
+//   }
+
+//   componentDidCatch(error, info) {
+//     console.warn(error);
+//     console.warn(info);
+//   }
+
+//   static getDerivedStateFromError(error) {
+//     return { error: error.message };
+//   }
+
+//   apiCall = (url, reqInit = {}) => {
+//     this.setState({ loading: true });
+//     return new Promise((resolve, reject) => {
+//       fetch(url, reqInit)
+//         .then((res) => res.json())
+//         .then((data) => {
+//           resolve(data);
+//         })
+//         .catch((error) => {
+//           reject(error);
+//         })
+//         .finally(() => {
+//           this.setState({ loading: false });
+//         });
+//     });
+//   };
+
+//   loadData = async () => {
+//     const todoList = await this.apiCall('http://localhost:3004/todos');
+//     this.setState({ todoList });
+//   };
+
+//   addTodo = async (data) => {
+//     const newTodo = await this.apiCall('http://localhost:3004/todos', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//         accept: 'application/json',
+//       },
+//       body: JSON.stringify(data),
+//     });
+//     console.warn(newTodo);
+//     const { todoList } = this.state;
+//     this.setState({ todoList: [newTodo, ...todoList] }, () => {
+//       // console.log(this.todoText);
+//     });
+//   };
+
+//   updateTodo = async (data) => {
+//     const updatedTodo = await this.apiCall(`http://localhost:3004/todos/${data.id}`, {
+//       method: 'PUT',
+//       headers: {
+//         'Content-Type': 'application/json',
+//         accept: 'application/json',
+//       },
+//       body: JSON.stringify(data),
+//     });
+//     const { todoList } = this.state;
+//     const updatedTodoList = todoList.map((x) => {
+//       if (x.id === updatedTodo.id) {
+//         return updatedTodo;
+//       }
+//       return x;
+//     });
+//     this.setState({ todoList: updatedTodoList });
+//   };
+
+//   deleteTodo = async (id) => {
+//     await this.apiCall(`http://localhost:3004/todos/${id}`, {
+//       method: 'DELETE',
+//     });
+//     const { todoList } = this.state;
+//     this.setState({ todoList: todoList.filter((x) => x.id !== id) });
+//   };
+
+//   submit = async (e) => {
+//     e.preventDefault();
+//     const { value } = this.todoText;
+//     if (value) {
+//       await this.addTodo({ text: value, isDone: false });
+//       // this.todoText.value = '';
+//     }
+//   };
+
+//   completeTodo = (todo) => {
+//     this.updateTodo({ ...todo, isDone: !todo.isDone });
+//     // [
+//     //     ...todoList.slice(0, i),
+//     //     { ...todoList[i], isDone: !todoList[i].isDone },
+//     //     ...todoList.slice(i + 1),
+//     //   ]
+//   };
+
+//   changeStatus = (status) => {
+//     this.setState({ status });
+//   };
+
+//   render() {
+//     const { todoList, status, error, loading } = this.state;
+//     if (error) {
+//       return <h2 style={{ color: 'red' }}>{error}</h2>;
+//     }
+
+//     if (loading) {
+//       return <h3 style={{ color: 'blue' }}>Loading...</h3>;
+//     }
+
+//     return (
+//       <div
+//         style={{
+//           ...styles.row,
+//           ...styles.hCenter,
+//           ...styles.flex,
+//         }}
+//       >
+//         {/* <h1>{user.name}</h1> */}
+//         <h3 id="h3">To-Do App</h3>
+//         {/* <User user={user} />
+
+//         <button
+//           type="button"
+//           onClick={() => {
+//             this.setState({
+//               user: { ...user, name: 'rohit' },
+//             });
+//           }}
+//         >
+//           Change name
+//         </button> */}
+//         <TodoForm
+//           submit={this.submit}
+//           inputRef={(ref) => {
+//             this.todoText = ref;
+//           }}
+//         />
+//         <div style={styles.innerContainer}>
+//           <TodoList
+//             todoList={todoList}
+//             status={status}
+//             completeTodo={this.completeTodo}
+//             deleteTodo={this.deleteTodo}
+//           />
+//           <TodoActions changeStatus={this.changeStatus} />
+//         </div>
+//       </div>
+//     );
+//   }
+// }
+
+// index.propTypes = {};
+
+// export default index;

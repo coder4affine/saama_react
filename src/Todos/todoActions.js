@@ -8,6 +8,7 @@ const todoActions = ({ changeStatus }) => {
   return (
     <div style={styles.display}>
       <button
+        data-testid="btn-all"
         style={{ ...styles.flex, ...styles.center }}
         type="button"
         onClick={() => changeStatus(statusText[0])}
@@ -15,6 +16,7 @@ const todoActions = ({ changeStatus }) => {
         All
       </button>
       <button
+        testid="btn-pending"
         style={{ ...styles.flex, ...styles.center }}
         type="button"
         onClick={() => changeStatus(statusText[1])}
@@ -22,6 +24,7 @@ const todoActions = ({ changeStatus }) => {
         Pending
       </button>
       <button
+        data-testid="btn-completed"
         style={{ ...styles.flex, ...styles.center }}
         type="button"
         onClick={() => changeStatus(statusText[2])}
