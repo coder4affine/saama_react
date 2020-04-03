@@ -15,11 +15,14 @@
     "eslint:fix": "eslint --debug src/ --fix"
   },
   "dependencies": {
+    "@loadable/component": "^5.12.0",
     "babel-eslint": "^10.1.0",
+    "moment": "^2.24.0",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-perf-devtool": "^3.1.8"
+    "react-perf-devtool": "^3.1.8",
+    "react-router-dom": "^5.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

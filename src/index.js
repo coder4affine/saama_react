@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { registerObserver } from 'react-perf-devtool';
-// import App from './app';
-import Todos from './Todos';
+import App from './app';
+// import Todos from './Todos';
 import './main.css';
 
 const options = {
@@ -14,4 +14,4 @@ function callback() {}
 
 registerObserver(options, callback);
 
-ReactDOM.render(<Todos />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));
