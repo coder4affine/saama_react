@@ -16,7 +16,7 @@ const App = () => (
     <nav>
       <ul>
         {routes.map((x) => {
-          if (!x.auth) {
+          if (!x.auth && x.name) {
             return (
               <li key={x.path}>
                 <Link to={x.path}>{x.name}</Link>

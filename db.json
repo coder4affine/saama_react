@@ -50,5 +50,13 @@
       "isDone": false,
       "id": 23
     }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "productName": "IPhone 11",
+      "productPrice": 60000.20,
+      "manufacturer": "Apple"
+    }
   ]
 }

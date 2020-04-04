@@ -17,6 +17,14 @@ const Settings = loadable(() => import('./pages/Settings'), {
   fallback: <div>Loading...</div>,
 });
 
+const Products = loadable(() => import('./pages/Products'), {
+  fallback: <div>Loading...</div>,
+});
+
+const AddProduct = loadable(() => import('./pages/AddProduct'), {
+  fallback: <div>Loading...</div>,
+});
+
 const route = [
   {
     path: '/',
@@ -34,6 +42,15 @@ const route = [
     path: '/settings',
     component: Settings,
     name: 'Settings',
+  },
+  {
+    path: '/products',
+    component: Products,
+    name: 'Products',
+  },
+  {
+    path: '/addProduct',
+    component: AddProduct,
   },
 ];
 
