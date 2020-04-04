@@ -1,5 +1,6 @@
 import React from 'react';
 import loadable from '@loadable/component';
+import AddProduct from './pages/AddProduct';
 
 // const dynamicRoute = (pathName) => {
 //   console.log('route');
@@ -21,9 +22,9 @@ const Products = loadable(() => import('./pages/Products'), {
   fallback: <div>Loading...</div>,
 });
 
-const AddProduct = loadable(() => import('./pages/AddProduct'), {
-  fallback: <div>Loading...</div>,
-});
+// const AddProduct = loadable(() => import('./pages/AddProduct'), {
+//   fallback: <div>Loading...</div>,
+// });
 
 const route = [
   {
@@ -50,6 +51,10 @@ const route = [
   },
   {
     path: '/addProduct',
+    component: AddProduct,
+  },
+  {
+    path: '/updateProduct/:id',
     component: AddProduct,
   },
 ];

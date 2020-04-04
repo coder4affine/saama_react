@@ -11,10 +11,20 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
-const Index = ({ history, loadProducts, products: { loading, data: products, error } }) => {
+const Index = ({
+  history,
+  loadProducts,
+  deleteProductRequest,
+  products: { loading, data: products, error },
+}) => {
   useEffect(() => {
-    loadProducts();
+    if (products.length <= 0) {
+      loadProducts();
+    }
   }, []);
 
   if (loading) {
@@ -39,6 +49,7 @@ const Index = ({ history, loadProducts, products: { loading, data: products, err
               <TableCell>Product Name</TableCell>
               <TableCell align="right">Product Price</TableCell>
               <TableCell align="right">Manufacturer</TableCell>
+              <TableCell align="right">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -49,6 +60,21 @@ const Index = ({ history, loadProducts, products: { loading, data: products, err
                 </TableCell>
                 <TableCell align="right">{x.productPrice}</TableCell>
                 <TableCell align="right">{x.manufacturer}</TableCell>
+                <TableCell align="right">
+                  <div>
+                    <IconButton
+                      aria-label="edit"
+                      onClick={() => {
+                        history.push(`/updateProduct/${x.id}`);
+                      }}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton aria-label="delete" onClick={() => deleteProductRequest(x.id)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </div>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -75,6 +101,7 @@ Index.propTypes = {
     ).isRequired,
     error: PropTypes.instanceOf(Error),
   }).isRequired,
+  deleteProductRequest: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -83,6 +110,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   loadProducts: () => dispatch({ type: 'LOAD_PRODUCTS_REQUEST' }),
+  deleteProductRequest: (payload) => dispatch({ type: 'DELETE_PRODUCT_REQUEST', payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Index);

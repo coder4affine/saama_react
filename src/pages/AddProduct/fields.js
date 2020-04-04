@@ -26,7 +26,7 @@ const fields = [
       }
       return error;
     },
-    value: 0,
+    value: '0',
   },
   {
     name: 'manufacturer',
@@ -34,15 +34,15 @@ const fields = [
     component: SelectInput,
     options: [
       {
-        value: 'apple',
+        value: 'Apple',
         text: 'Apple',
       },
       {
-        value: 'samsung',
+        value: 'Samsung',
         text: 'Samsung',
       },
       {
-        value: 'xiomi',
+        value: 'Xiomi',
         text: 'Xiomi',
       },
     ],

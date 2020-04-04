@@ -11,7 +11,7 @@ const index = ({
     {...props}
     id="outlined-basic"
     variant="outlined"
-    error={touched[field.name] && errors[field.name]}
+    error={!!touched[field.name] && !!errors[field.name]}
     helperText={touched[field.name] && errors[field.name]}
     {...field}
   />

@@ -1,5 +1,7 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { Router, Switch, Route, Link } from 'react-router-dom';
+import customHistory from './history';
+
 // import Home from './pages/Home';
 // import Users from './pages/Users';
 // import Settings from './pages/Settings';
@@ -12,7 +14,7 @@ import routes from './routes';
 // };
 
 const App = () => (
-  <Router>
+  <Router history={customHistory}>
     <nav>
       <ul>
         {routes.map((x) => {

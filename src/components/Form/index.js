@@ -16,9 +16,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const index = ({ children, fields, ...props }) => {
+  console.warn(props);
   const classes = useStyles();
   return (
-    <Formik {...props} initialValues={fields.reduce((p, c) => ({ ...p, [c.name]: c.value }), {})}>
+    <Formik initialValues={fields.reduce((p, c) => ({ ...p, [c.name]: c.value }), {})} {...props}>
       {() => (
         <Form className={classes.root}>
           {fields.map((x) => (
