@@ -83,18 +83,18 @@ const Index = () => {
     loadData();
   }, []);
 
-  // componentDidUpdate
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      console.log('timer');
-    }, 1000);
+  // // componentDidUpdate
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     console.log('timer');
+  //   }, 1000);
 
-    console.log('useEffect', loading);
-    return () => {
-      console.log('unmount');
-      clearTimeout(timer);
-    };
-  }, [loading, error]);
+  //   console.log('useEffect', loading);
+  //   return () => {
+  //     console.log('unmount');
+  //     clearTimeout(timer);
+  //   };
+  // }, [loading, error]);
 
   // componentWillUnmount
 
@@ -159,7 +159,7 @@ const Index = () => {
   };
 
   if (error) {
-    return <h2 style={{ color: 'red' }}>{error}</h2>;
+    return <h2 style={{ color: 'red' }}>{error.message}</h2>;
   }
 
   if (loading) {

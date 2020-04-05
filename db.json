@@ -54,7 +54,7 @@
   "products": [
     {
       "productName": "iphone",
-      "productPrice": "70000",
+      "productPrice": 70000,
       "manufacturer": "Apple",
       "id": 1
     }

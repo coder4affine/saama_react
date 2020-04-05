@@ -16,7 +16,7 @@ const todoActions = ({ changeStatus }) => {
         All
       </button>
       <button
-        testid="btn-pending"
+        data-testid="btn-pending"
         style={{ ...styles.flex, ...styles.center }}
         type="button"
         onClick={() => changeStatus(statusText[1])}

@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TodoActions should render TodoActions 1`] = `
+<div>
+  <div
+    style="display: flex;"
+  >
+    <button
+      data-testid="btn-all"
+      style="flex: 1; justify-content: center; align-items: center;"
+      type="button"
+    >
+      All
+    </button>
+    <button
+      data-testid="btn-pending"
+      style="flex: 1; justify-content: center; align-items: center;"
+      type="button"
+    >
+      Pending
+    </button>
+    <button
+      data-testid="btn-completed"
+      style="flex: 1; justify-content: center; align-items: center;"
+      type="button"
+    >
+      Completed
+    </button>
+  </div>
+</div>
+`;

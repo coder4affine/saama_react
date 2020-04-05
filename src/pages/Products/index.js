@@ -14,13 +14,15 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+// import { ProductContext } from '../../contex/ProductsContext';
 
-const Index = ({
+export const Index = ({
   history,
   loadProducts,
   deleteProductRequest,
   products: { loading, data: products, error },
 }) => {
+  // const { products, loading, error, loadProducts } = useContext(ProductContext);
   useEffect(() => {
     if (products.length <= 0) {
       loadProducts();
@@ -38,7 +40,12 @@ const Index = ({
   return (
     <div>
       <h1>Products Page</h1>
-      <Button variant="contained" color="primary" onClick={() => history.push('addProduct')}>
+      <Button
+        data-testid="btn-add-product"
+        variant="contained"
+        color="primary"
+        onClick={() => history.push('addProduct')}
+      >
         Add Product
       </Button>
 
@@ -49,7 +56,7 @@ const Index = ({
               <TableCell>Product Name</TableCell>
               <TableCell align="right">Product Price</TableCell>
               <TableCell align="right">Manufacturer</TableCell>
-              <TableCell align="right">Actions</TableCell>
+              <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -60,9 +67,10 @@ const Index = ({
                 </TableCell>
                 <TableCell align="right">{x.productPrice}</TableCell>
                 <TableCell align="right">{x.manufacturer}</TableCell>
-                <TableCell align="right">
+                <TableCell>
                   <div>
                     <IconButton
+                      data-testid={`btn-edit-product-${x.id}`}
                       aria-label="edit"
                       onClick={() => {
                         history.push(`/updateProduct/${x.id}`);
